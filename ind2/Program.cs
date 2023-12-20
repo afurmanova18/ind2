@@ -6,7 +6,7 @@ using System.Windows.Forms;
 
 namespace ind2
 {
-    internal static class Program
+    static class Program
     {
         /// <summary>
         /// Главная точка входа для приложения.

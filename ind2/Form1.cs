@@ -61,9 +61,17 @@ namespace ind2
                     Point color = RayTrace(r, 10, 1);
 
                     // Нормализация цвета
-                    if (color.x > 1.0f || color.y > 1.0f || color.z > 1.0f)
+                    if (color.x > 1.0f)
                     {
-                        color = Normalize(color);
+                        color.x = 1.0f;
+                    }
+                    if (color.y > 1.0f)
+                    {
+                        color.y = 1.0f;
+                    }
+                    if (color.z > 1.0f)
+                    {
+                        color.z = 1.0f;
                     }
 
                     colors[i, j] = Color.FromArgb((int)(255 * color.x), (int)(255 * color.y), (int)(255 * color.z));
@@ -201,29 +209,51 @@ namespace ind2
             return rotatedPolyhedron;
         }
 
-        public void Add_wall(int wall_number, Color color)
+        public void Add_wall(int wall_number, Color color, bool f)
         {
             Polyhedron wall = new Polyhedron(new List<Line>() { Polyhedron.Hex(10).lines[wall_number] });
             wall.lines[0].color = color;
 
-            wall.material = new double[] { 0, 0, 0.05, 0.7, 1 };
+            if (f)
+            {
+                wall.material = new double[] { 1, 0, 0.05, 0.7, 1 };
+            }
+            else
+                wall.material = new double[] { 0, 0, 0.05, 0.7, 1 };
 
             All_figures.Add(wall);
 
         }
         public void Set_figures()
         {
-            Add_wall(0, Color.GreenYellow);//пол
-            Add_wall(1, Color.MediumSeaGreen);//передняя
-            Add_wall(2, Color.White);//потолок
-            Add_wall(3, Color.DeepSkyBlue);//правая
-            Add_wall(4, Color.HotPink);//левая
-            Add_wall(5, Color.White);//задняя
+            Add_wall(0, Color.GreenYellow,false);//пол
+            if(checkBox6.Checked)
+                Add_wall(1, Color.MediumSeaGreen, true);//передняя
+            else
+                Add_wall(1, Color.MediumSeaGreen, false);//передняя
+            Add_wall(2, Color.White,false);//потолок
+            if(checkBox3.Checked)
+                Add_wall(3, Color.DeepSkyBlue, true);//правая
+            else
+                Add_wall(3, Color.DeepSkyBlue, false);
+
+            if (checkBox5.Checked)
+                Add_wall(4, Color.HotPink, true);//левая
+            else
+                Add_wall(4, Color.HotPink, false);//левая
+            if (checkBox4.Checked)
+                Add_wall(5, Color.Black, true);//задняя
+            else
+                Add_wall(5, Color.Black, false);//задняя
+
 
 
             Polyhedron cube = Polyhedron.Hex(3);
             cube.lines = move(cube, 3, 0, -4).lines;
-            cube.material = new double[] { Convert.ToInt32(checkBox1.Checked), 0, 0.1, 0.7, 1.5 };
+            if (checkBox1.Checked)
+                cube.material = new double[] { 1, 0, 0.3f, 0.7f, 1f };
+            else
+                cube.material = new double[] { 0, 0, 0.1, 0.7, 1.5 };
             foreach (var x in cube.lines)
                 x.color = Color.LightSalmon;
             All_figures.Add(cube);
@@ -233,31 +263,12 @@ namespace ind2
             cube2.lines = rotate(cube2, 0, 0, -20).lines;
             cube2.lines = move(cube2, -1.5, 2, -4).lines;
             if (checkBox2.Checked)
-                cube2.material = new double[] { 0, 0.9f, 0.3f, 0.7f, 1f };
+                cube2.material = new double[] { 1, 0, 0.3f, 0.7f, 1f };
             else
                 cube2.material = new double[] { 0, 0, 0.1, 0.7, 1.5 };
             foreach (var x in cube2.lines)
                 x.color = Color.PapayaWhip;
             All_figures.Add(cube2);
-
-
-            Ball ball = new Ball(new Point(2.5f, 2, 0f), 2f);
-            ball.lines = move(ball, -4, 0, 2).lines;
-            if (checkBox4.Checked)
-            {
-                ball.material = new double[] { 1, 0f, 0.1f, 0f, 1f };
-            }
-            else if (checkBox3.Checked)
-            {
-                ball.material = new double[] { 0f, 0.9f, 0.1f, 0.5f, 1.05f };
-            }
-            else
-            {
-                ball.material = new double[] { 0f, 0f, 0.1f, 0f, 1f };
-            }
-            ball.material_color = new Point(Color.SlateBlue.R, Color.SlateBlue.G, Color.SlateBlue.B);
-            All_figures.Add(ball);
-
 
         }
 

@@ -22,7 +22,7 @@ namespace ind2
             Point dir = start_point - hit_point;
             dir = Form1.Normalize(dir);//нормализуем вектор направления
             Point diff;
-            if (Form1.Cross(normal, dir) > 0)//меньше 90 гр
+            if (Form1.Cross(normal, dir) > 0)
                 diff = diffuse_coef * color_light * Form1.Cross(normal, dir);
             else
                 diff = diffuse_coef * color_light * 0.5;

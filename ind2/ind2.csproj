@@ -46,7 +46,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Ball.cs" />
     <Compile Include="Light.cs" />
     <Compile Include="Polyhedron.cs" />
     <Compile Include="Line.cs" />
